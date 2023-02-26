@@ -2,7 +2,7 @@
   "profiles": {
     "Sys": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\User\\Documents\\Xepobopa"
+      "commandLineArgs": "C:\\Users\\Public\\Documents\\Xepobopa\\byArgs.json"
     }
   }
 }

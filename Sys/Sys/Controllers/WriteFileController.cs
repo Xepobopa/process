@@ -14,7 +14,7 @@ namespace Sys.Controllers
             dirController = new WriteDirController();
         }
 
-        public void whriteFile(string path, string content)
+        public void WriteFile(string path, string content)
         {
             try
             {
@@ -43,7 +43,6 @@ namespace Sys.Controllers
             {
                 Console.WriteLine(e);
             }
-
         }
     }
 }

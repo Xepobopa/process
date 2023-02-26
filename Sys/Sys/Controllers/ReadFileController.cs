@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,43 +9,43 @@ namespace Sys.Controllers
 {
     public class ReadFileController
     {
-        string defaultPath;
-        public ReadFileController()
-        {
-            defaultPath = "C:\\Users\\User\\Desktop\\Sys\\Sys\\Sys\\whiteList.json";
-        }
-
-        public string ReadFile(string path)
+        private string _filePath;
+        public ReadFileController(string path)
         {
             string bufPath = "";
-            try
+            foreach (string dir in path.Split('\\'))
             {
-                foreach (string dir in path.Split('\\'))
+                bufPath += dir;
+                if (!path.Equals(bufPath))
                 {
-                    bufPath += dir;
-                    if (!path.Equals(bufPath))
+                    bufPath += "\\";
+                    if (!Directory.Exists(bufPath))
                     {
-                        bufPath += "\\";
-                        if (!Directory.Exists(bufPath))
-                        {
-                            path = defaultPath;
-                            break;
-                        }
-                    }
-                    else if (!File.Exists(bufPath))
-                    {
-                        path = defaultPath;
+                        _filePath = bufPath;
                         break;
                     }
                 }
+                else if (!File.Exists(bufPath))
+                {
+                    _filePath = bufPath;
+                    break;
+                }
             }
-            catch (Exception e)
-            {
-                return e.Message;
-            }
-
-            return File.ReadAllText(path);
+            _filePath = bufPath;
         }
 
+        public string[] GetJson()
+        {
+            Console.WriteLine(_filePath);
+            if (Path.GetExtension(_filePath).Equals(".json"))
+                return JsonConvert.DeserializeObject<string[]>(GetPlainText(_filePath));
+            else
+                throw new Exception($"Can't find any .json file in {_filePath} dir!");
+        }
+
+        public string GetPlainText(string path)
+        {
+            return File.ReadAllText(path);
+        }
     }
 }
